@@ -1,0 +1,64 @@
+{
+  "name": "bilal-siraj-travel-umrah-services",
+  "version": "1.0.0",
+  "main": "main.js",
+  "description": "Bilal Siraj Travel & Umrah Services Co. desktop app",
+  "scripts": {
+    "start": "electron .",
+    "rebuild": "electron-rebuild -f -w better-sqlite3",
+    "postinstall": "electron-builder install-app-deps && npm run rebuild",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --win nsis",
+    "build-exe": "electron-builder --win nsis"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.4.1"
+  },
+  "devDependencies": {
+    "@electron/get": "^4.0.3",
+    "@electron/rebuild": "^3.6.0",
+    "electron": "^28.3.3",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.bilalsiraj.travelumrah",
+    "productName": "Bilal Siraj Travel & Umrah Services Co.",
+    "files": [
+      "index.html",
+      "styles.css",
+      "app.js",
+      "main.js",
+      "preload.js",
+      "sqlite.js",
+      "logo.jpg",
+      "SUPABASE_SETUP.md",
+      "node_modules/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "node_modules/better-sqlite3/build/Release",
+        "to": "."
+      }
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "signAndEditExecutable": false,
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}

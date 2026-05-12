@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bilal Siraj Travel &amp; Umrah Services Co.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Naskh+Arabic:wght@400;700&display=swap"
+      rel="stylesheet"/>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/air-datepicker@3.6.0/air-datepicker.css" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="header-brand">
+        <img src="./app_icon.png" alt="Bilal Siraj Travel &amp; Umrah Services Co. Logo" class="header-logo" />
+        <div class="header-brand-text">
+          <h1>Bilal Siraj Travel &amp; Umrah Services Co.</h1>
+          <p>Travel, Umrah & Tourism Calculation System</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <form id="globalSearchForm" class="search-box" autocomplete="off">
+          <input
+            id="searchQuery"
+            type="text"
+            placeholder="Search name, contact, route..."
+          />
+          <button id="searchBtn" type="submit" class="btn btn-green btn-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Search</span>
+          </button>
+        </form>
+      </div>
+    </header>
+
+    <div class="app-layout">
+      <aside class="sidebar">
+        <div class="nav-group file-menu-group">
+          <button id="fileMenuToggle" class="nav-item">
+            <i class="fa-solid fa-file-lines"></i>
+            <span>File</span>
+            <i class="fa-solid fa-chevron-down caret" style="margin-left: auto; font-size: 0.7rem"></i>
+          </button>
+          <div id="fileMenuPanel" class="nav-sub">
+            <button type="button" class="nav-sub-item" data-export="ticket">
+              <i class="fa-solid fa-ticket"></i>
+              <span>Monthly Ticket Sale</span>
+            </button>
+            <button type="button" class="nav-sub-item" data-export="expense">
+              <i class="fa-solid fa-receipt"></i>
+              <span>Monthly Expense</span>
+            </button>
+            <button type="button" class="nav-sub-item" data-export="monthlySummary">
+              <i class="fa-solid fa-calendar-day"></i>
+              <span>Monthly Summary</span>
+            </button>
+            <button type="button" class="nav-sub-item" data-export="yearly">
+              <i class="fa-solid fa-chart-line"></i>
+              <span>Yearly Summary</span>
+            </button>
+            <button type="button" class="nav-sub-item" id="exportDataBtn">
+              <i class="fa-solid fa-download"></i>
+              <span>Export All Data</span>
+            </button>
+            <button type="button" class="nav-sub-item" id="importDataBtn">
+              <i class="fa-solid fa-upload"></i>
+              <span>Import Data</span>
+            </button>
+          </div>
+        </div>
+        <button class="nav-item" data-view="ticketSale">
+          <i class="fa-solid fa-ticket-simple"></i>
+          <span>Ticket Sale</span>
+        </button>
+        <button class="nav-item" data-view="monthlyExpense">
+          <i class="fa-solid fa-wallet"></i>
+          <span>Monthly Expense</span>
+        </button>
+        <button class="nav-item" data-view="monthlySummary">
+          <i class="fa-solid fa-calendar-day"></i>
+          <span>Monthly Summary</span>
+        </button>
+        <div class="nav-group">
+          <button class="nav-item" data-view="yearlySummary">
+            <i class="fa-solid fa-calendar-check"></i>
+            <span>Yearly Summary</span>
+          </button>
+        </div>
+        <div class="nav-group nav-group--ca">
+            <button type="button" class="nav-item" id="customerMenuToggle" data-ca-home>
+              <i class="fa-solid fa-address-book"></i>
+              <span>Customers</span>
+              <i class="fa-solid fa-chevron-down caret" style="margin-left: auto; font-size: 0.7rem"></i>
+            </button>
+            <div class="nav-sub" id="caSubNav" aria-hidden="true">
+            <button type="button" class="nav-sub-item" data-view="caDashboard">
+              <i class="fa-solid fa-gauge-high"></i>
+              <span>Dashboard</span>
+            </button>
+            <button type="button" class="nav-sub-item" data-view="caCustomers">
+              <i class="fa-solid fa-users"></i>
+              <span>Customers</span>
+            </button>
+            <button type="button" class="nav-sub-item" data-view="caInvoices">
+              <i class="fa-solid fa-file-invoice-dollar"></i>
+              <span>Invoices</span>
+            </button>
+            <button type="button" class="nav-sub-item" data-view="caPayments">
+              <i class="fa-solid fa-money-bill-wave"></i>
+              <span>Payments</span>
+            </button>
+            <button type="button" class="nav-sub-item" data-view="caReports">
+              <i class="fa-solid fa-chart-column"></i>
+              <span>Reports</span>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <main class="content glass">
+        <section class="view active" id="ticketSaleView">
+          <h2>Ticket Sale Management</h2>
+          <form id="saleForm" class="card form">
+            <h3>Add New Sale</h3>
+            <div class="form-grid three">
+              <label>Contact<input id="sContact" required /></label>
+              <label>Passenger Name<input id="sPassenger" required /></label>
+              <label>Route<input id="sRoute" required /></label>
+              <label>Airline
+                <select id="sAirline" required></select>
+              </label>
+              <label>Date
+                <input id="sDate" type="hidden" required />
+                <input id="sDateDisplay" type="text" required class="modern-date" inputmode="none" autocomplete="off" placeholder="Select date" readonly />
+              </label>
+              <label>Currency
+                <select id="sCurrency" required>
+                  <option value="USD">USD</option>
+                  <option value="AFN">AFN</option>
+                </select>
+              </label>
+              <label>Airline Cost<input id="sCost" type="number" min="0" step="0.01" required /></label>
+              <label>Company Profit<input id="sProfit" type="number" min="0" step="0.01" required /></label>
+            </div>
+            <button id="saleSubmitBtn" type="submit" class="btn btn-green">+ Add Sale</button>
+          </form>
+          <section class="card print-target" id="ticketMonthlyListCard">
+            <h3 id="ticketMonthlyTitle">Monthly Ticket Sale List</h3>
+            <div class="form-grid two ticket-print-controls">
+              <label>Month
+                <select id="tsMonth"></select>
+              </label>
+              <label>Year
+              <select id="tsYear"></select>
+              </label>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Contact</th>
+                    <th>Passenger</th>
+                    <th>Route</th>
+                    <th>Airline</th>
+                    <th>Date</th>
+                    <th>Currency</th>
+                    <th>Airline Cost</th>
+                    <th>Company Profit</th>
+                    <th>Total Price</th>
+                  </tr>
+                </thead>
+                <tbody id="ticketMonthlyTable"></tbody>
+              </table>
+            </div>
+            <div class="stats-two">
+              <article class="card shallow"><span>Total Sales (USD)</span><strong id="tsTotalUsd">$0.00</strong></article>
+              <article class="card shallow"><span>Total Sales (AFN)</span><strong id="tsTotalAfn">AFN 0.00</strong></article>
+            </div>
+          </section>
+
+          <section class="card">
+            <h3>Advanced Ticket Sales & Profit System</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Contact</th>
+                    <th>Passenger</th>
+                    <th>Route</th>
+                    <th>Airline</th>
+                    <th>Date</th>
+                    <th>Currency</th>
+                    <th>Airline Cost</th>
+                    <th>Company Profit</th>
+                    <th>Total Price</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="saleTable"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+        
+        <section class="view" id="monthlyExpenseView">
+          <h2>Monthly Expense Record</h2>
+          <form id="expenseForm" class="card form">
+            <h3>Add New Expense</h3>
+            <div class="form-grid three">
+              <label>Expense Name<input id="eName" required /></label>
+              <label>Currency
+                <select id="eCurrency" required>
+                  <option value="USD">USD</option>
+                  <option value="AFN">AFN</option>
+                </select>
+              </label>
+              <label>Amount<input id="eAmount" type="number" min="0" step="0.01" required /></label>
+              <label>Date
+                <input id="eDate" type="hidden" required />
+                <input id="eDateDisplay" type="text" required class="modern-date" inputmode="none" autocomplete="off" placeholder="Select date" readonly />
+              </label>
+            </div>
+            <button id="expenseSubmitBtn" type="submit" class="btn btn-green">+ Add Expense</button>
+          </form>
+
+          <section class="card print-target" id="expenseMonthlyListCard">
+            <h3 id="expenseMonthlyTitle">Monthly Expense List</h3>
+            <div class="form-grid two expense-print-controls">
+              <label>Month
+                <select id="exMonth"></select>
+              </label>
+              <label>Year
+                <select id="exYear"></select>
+              </label>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Expense Name</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Currency</th>
+                  </tr>
+                </thead>
+                <tbody id="expenseMonthlyTable"></tbody>
+              </table>
+            </div>
+            <div class="stats-two">
+              <article class="card shallow"><span>Total USD</span><strong id="exTotalUsd">$0.00</strong></article>
+              <article class="card shallow"><span>Total AFN</span><strong id="exTotalAfn">AFN 0.00</strong></article>
+            </div>
+          </section>
+
+          <section class="card">
+            <h3>Monthly Expense Record</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Expense Name</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Currency</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="expenseTable"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="monthlySummaryView">
+          <h2>Monthly Summary</h2>
+          <section class="card">
+            <h3>Select Period</h3>
+            <div class="form-grid two">
+              <label>Month
+                <select id="mMonth"></select>
+              </label>
+              <label>Year
+                <select id="mYear"></select>
+              </label>
+            </div>
+          </section>
+          <section class="metric-grid">
+            <article class="metric green"><span>Total Profit from Tickets</span><strong id="mTicketProfit">USD: $0.00 | AFN: 0</strong></article>
+            <article class="metric red"><span>Total Expenses</span><strong id="mExpenses">USD: $0.00 | AFN: 0</strong></article>
+            <article class="metric blue"><span>Net Profit</span><strong id="mNetProfit">USD: $0.00 | AFN: 0</strong></article>
+          </section>
+          <section class="card">
+            <h3 id="mSummaryTitle">Financial Summary</h3>
+            <div class="stats-two">
+              <article class="card shallow"><span>Number of Sales</span><strong id="mSaleCount">0</strong></article>
+              <article class="card shallow"><span>Number of Expenses</span><strong id="mExpenseCount">0</strong></article>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="yearlySummaryView">
+          <h2>Yearly Profit & Expenses Report</h2>
+          <section class="card">
+            <h3>Select Year</h3>
+            <div class="form-grid one">
+              <label>Year
+                <select id="yYear"></select>
+              </label>
+            </div>
+          </section>
+          <section class="metric-grid">
+            <article class="metric green"><span>Total Year Profit</span><strong id="yProfit">USD: $0.00 | AFN: 0</strong></article>
+            <article class="metric red"><span>Total Year Expenses</span><strong id="yExpenses">USD: $0.00 | AFN: 0</strong></article>
+            <article class="metric blue"><span>Total Year Net Profit</span><strong id="yNet">USD: $0.00 | AFN: 0</strong></article>
+          </section>
+          <section class="card yearly-breakdown-card">
+            <h3 id="breakdownTitle">Monthly Breakdown</h3>
+            <div class="table-wrap yearly-breakdown-wrap">
+              <table class="yearly-breakdown-table">
+                <thead>
+                  <tr>
+                    <th>Month</th>
+                    <th>Profit (USD)</th>
+                    <th>Expenses (USD)</th>
+                    <th>Net Profit (USD)</th>
+                    <th>Profit (AFN)</th>
+                    <th>Expenses (AFN)</th>
+                    <th>Net Profit (AFN)</th>
+                  </tr>
+                </thead>
+                <tbody id="yearBreakdownBody"></tbody>
+              </table>
+            </div>
+          </section>
+          <section class="card">
+            <h3>Annual Performance Analysis</h3>
+            <div class="stats-four">
+              <article class="card shallow"><span>Total Transactions</span><strong id="yTransactions">0</strong><small>Ticket sales this year</small></article>
+              <article class="card shallow"><span>Total Expense Items</span><strong id="yExpenseItems">0</strong><small>Recorded expenses this year</small></article>
+              <article class="card shallow"><span>Average Monthly Profit</span><strong id="yAvgProfit">USD: $0.00 | AFN: 0</strong><small>Based on annual data</small></article>
+              <article class="card shallow"><span>Average Monthly Expenses</span><strong id="yAvgExpenses">USD: $0.00 | AFN: 0</strong><small>Based on annual data</small></article>
+            </div>
+          </section>
+        </section>
+
+        <section class="view ca-dashboard" id="caDashboardView">
+          <div class="title-row">
+            <div>
+            <h2>Customers &amp; Accounts</h2>
+            </div>
+          </div>
+          <section class="metric-grid">
+            <article class="metric blue"><span>Total invoices</span><strong id="caDashInvoiced">USD: $0.00 | AFN: 0</strong></article>
+            <article class="metric green"><span>Total received</span><strong id="caDashPaid">USD: $0.00 | AFN: 0</strong></article>
+            <article class="metric red"><span>Total pending</span><strong id="caDashPending">USD: $0.00 | AFN: 0</strong></article>
+          </section>
+          <div class="ca-dues-lists">
+            <article class="card">
+              <h3>Customers with pending dues</h3>
+              <ul id="caDashDuesList"></ul>
+            </article>
+            <article class="card">
+              <h3>Customers fully paid</h3>
+              <ul id="caDashPaidList"></ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="caCustomersView">
+          <div class="title-row">
+            <div>
+              <h2>Customers</h2>
+              <p class="lead">Add and manage customer records</p>
+            </div>
+          </div>
+          <div class="card" style="margin-bottom: 12px">
+            <label class="search-inline">
+              <span class="lead" style="display: block; margin-bottom: 6px">Search customers</span>
+              <input id="caCustomerSearch" type="search" autocomplete="off" placeholder="Name, phone, email…" style="width: 100%; max-width: 360px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line)" />
+            </label>
+          </div>
+          <form id="caCustomerForm" class="card form" autocomplete="off">
+            <h3 id="caCustomerFormTitle">Add customer</h3>
+            <input type="hidden" id="caCustomerEditId" value="" />
+            <div class="form-grid two">
+              <label>Name<input id="caCustName" autocomplete="off" required /></label>
+              <label>Phone<input id="caCustPhone" type="tel" autocomplete="off" /></label>
+              <label>Email<input id="caCustEmail" type="email" autocomplete="off" /></label>
+              <label>Address<input id="caCustAddress" autocomplete="off" /></label>
+            </div>
+            <div class="action-row">
+              <button type="submit" class="btn btn-green" id="caCustomerSubmit">Save customer</button>
+              <button type="button" class="btn" id="caCustomerCancelEdit" hidden>Cancel edit</button>
+            </div>
+          </form>
+          <section class="card">
+            <h3>Customer list</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="caCustomerTable"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="caInvoicesView">
+          <div class="title-row">
+            <div>
+              <h2>Invoices</h2>
+              <p class="lead">Create invoices linked to customers</p>
+            </div>
+          </div>
+          <form id="caInvoiceForm" class="card form">
+            <h3 id="caInvoiceFormTitle">New invoice</h3>
+            <input type="hidden" id="caInvoiceEditId" value="" />
+            <div class="form-grid two">
+              <label>Customer
+                <select id="caInvoiceCustomer" required></select>
+              </label>
+              <label>Invoice number
+                <input id="caInvoiceNumber" required />
+              </label>
+              <label>Date
+                <input id="caInvoiceDate" type="hidden" required />
+                <input id="caInvoiceDateDisplay" type="text" required class="modern-date" inputmode="none" autocomplete="off" placeholder="Select date" readonly />
+              </label>
+              <label>Currency
+                <select id="caInvoiceCurrency" required>
+                  <option value="USD">USD</option>
+                  <option value="AFN">AFN</option>
+                </select>
+              </label>
+              <label>Total amount<input id="caInvoiceAmount" type="number" min="0" step="0.01" required /></label>
+            </div>
+            <label>Description<textarea id="caInvoiceDesc" rows="2"></textarea></label>
+            <div class="action-row">
+              <button type="button" class="btn" id="caInvoiceNextNum">Next invoice #</button>
+              <button type="submit" class="btn btn-green" id="caInvoiceSubmit">Save invoice</button>
+              <button type="button" class="btn" id="caInvoiceCancelEdit" hidden>Cancel</button>
+            </div>
+          </form>
+          <section class="card">
+            <h3>All invoices</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Serial Number</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Currency</th>
+                    <th>Amount</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="caInvoiceTable"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="caPaymentsView">
+          <div class="title-row">
+            <div>
+              <h2>Payments</h2>
+              <p class="lead">Record payments — balances update automatically</p>
+            </div>
+          </div>
+          <form id="caPaymentForm" class="card form">
+            <h3 id="caPaymentFormTitle">Record payment</h3>
+            <input type="hidden" id="caPaymentEditId" value="" />
+            <div class="form-grid two">
+              <label>Customer
+                <select id="caPaymentCustomer" required></select>
+              </label>
+              <label>Amount paid<input id="caPaymentAmount" type="number" min="0" step="0.01" required /></label>
+              <label>Currency
+                <select id="caPaymentCurrency" required>
+                  <option value="USD">USD</option>
+                  <option value="AFN">AFN</option>
+                </select>
+              </label>
+              <label>Payment date
+                <input id="caPaymentDate" type="hidden" required />
+                <input id="caPaymentDateDisplay" type="text" required class="modern-date" inputmode="none" autocomplete="off" placeholder="Select date" readonly />
+              </label>
+              <label>Method
+                <select id="caPaymentMethod">
+                  <option value="Cash">Cash</option>
+                  <option value="Bank transfer">Bank transfer</option>
+                  <option value="Card">Card</option>
+                  <option value="Other">Other</option>
+                </select>
+              </label>
+            </div>
+            <label>Description<textarea id="caInvoiceDesc" rows="2"></textarea></label>
+            <div class="action-row">
+              <button type="submit" class="btn btn-green" id="caPaymentSubmit">Save payment</button>
+              <button type="button" class="btn" id="caPaymentCancelEdit" hidden>Cancel</button>
+            </div>
+          </form>
+          <section class="card">
+            <h3>Payment history</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Customer</th>
+                    <th>Currency</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Method</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="caPaymentTable"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="caReportsView">
+          <div class="title-row">
+            <div>
+              <h2>Reports</h2>
+              <p class="lead">Outstanding balances and payment history</p>
+            </div>
+          </div>
+          <section class="card form">
+            <h3>Filters</h3>
+            <div class="form-grid two">
+              <label>From date
+                <input id="caReportFrom" type="hidden" />
+                <input id="caReportFromDisplay" type="text" class="modern-date" inputmode="none" autocomplete="off" placeholder="Select start date" readonly />
+              </label>
+              <label>To date
+                <input id="caReportTo" type="hidden" />
+                <input id="caReportToDisplay" type="text" class="modern-date" inputmode="none" autocomplete="off" placeholder="Select end date" readonly />
+              </label>
+              <label>Customer
+                <select id="caReportCustomer">
+                  <option value="">All customers</option>
+                </select>
+              </label>
+            </div>
+            <div class="action-row">
+              <button type="button" class="btn btn-green" id="caReportOutstanding">Outstanding report</button>
+              <button type="button" class="btn" id="caReportPayments">Payment history report</button>
+              <button type="button" class="btn" id="caReportPrint">Print or PDF</button>
+            </div>
+          </section>
+          <section class="card ca-report-output" id="caReportSection">
+            <h3 id="caReportTitle">Report output</h3>
+            <div id="caReportBody"></div>
+          </section>
+        </section>
+
+        <section class="view" id="manageAirlinesView">
+          <div class="title-row">
+            <div>
+              <h2>Manage Airlines</h2>
+              <p class="lead">Add or remove airlines from the list</p>
+            </div>
+          </div>
+          <form id="airlineForm" class="card form">
+            <h3>Add New Airline</h3>
+            <div class="form-grid two">
+              <label>Airline Name<input id="newAirlineName" placeholder="e.g. Emirates" required /></label>
+            </div>
+            <div class="action-row">
+              <button type="submit" class="btn btn-green">+ Add Airline</button>
+            </div>
+          </form>
+          <section class="card">
+            <h3>Current Airlines</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Airline Name</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="airlineListTable"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+    <div id="caInvoicePrintHost" class="ca-print-host" hidden></div>
+    <div id="caModal" class="ca-modal" aria-hidden="true">
+      <div class="ca-modal-backdrop" data-close-ca-modal></div>
+      <div class="ca-modal-panel card">
+        <div class="ca-modal-head">
+          <h3 id="caModalTitle">Customer</h3>
+          <button type="button" class="btn" data-close-ca-modal aria-label="Close">&times;</button>
+        </div>
+        <div id="caModalBody"></div>
+      </div>
+    </div>
+    <div id="toast" class="toast"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/air-datepicker@3.6.0/air-datepicker.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
